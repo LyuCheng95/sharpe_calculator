@@ -6,6 +6,6 @@ companies = set(frame.col(1))
 for company in companies:
     rows = frame.getRowIndiceContainingValue(company, 1)
     prices = list(map(lambda x: int(frame.valueAt(x, 3)), rows))
-    returns = QFFrame.calculateReturn(prices)
-    sharpeRatio = QFFrame.calculateSharpeRatio(returns)
+    returns = qp.calculateReturn(prices)
+    sharpeRatio = qp.calculateSharpeRatio(returns)
     print(sharpeRatio)

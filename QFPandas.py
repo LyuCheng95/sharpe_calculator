@@ -18,6 +18,52 @@ def parseStringToList(frame, hasHeaders=False):
     if hasHeaders:
         frame.headers = frame.dataList.pop(0)
 
+def calculateReturn(priceList):
+    '''
+    input: list of prices,
+    formula: (current price - previous price) / previous price
+    output: list of returns.
+    '''
+    returnList = []
+    prev = priceList.pop(0)
+    for price in priceList:
+        returnList.append((price - prev) / prev)
+    return returnList
+    
+def calculateMean(nums):
+    '''
+    input: list of numbers,
+    return: mean of the numbers.
+    '''
+    return sum(nums)/len(nums)
+
+def calculateSD(nums):
+    '''
+    input: list of numbers,
+    formula:
+    return: standard deviation of the numbers.
+    '''
+    squareOfSumOfDiffFromMean = 0
+    for num in nums:
+        mean = calculateMean(nums)
+        squareOfSumOfDiffFromMean += (num - mean) ** 2
+    sd = (squareOfSumOfDiffFromMean / len(nums)) ** 0.5
+    return sd 
+
+def calculateSharpeRatio(returns, Rf=0.05):
+    '''
+    input: list of returns,
+    formula: 
+    return: sharpe ratio.
+    '''
+    productOfFactor = 1
+    for value in returns:
+        factor = value + 1
+        productOfFactor = productOfFactor * factor
+    effectiveRateOfReturn = (productOfFactor ** (1/len(returns)) ** 12) - 1
+    riskPremium = effectiveRateOfReturn - Rf 
+    sharpeRatio = riskPremium / calculateSD(returns)
+    return sharpeRatio
 
 class QFFrame:
     rawDataString = ''
@@ -64,56 +110,26 @@ class QFFrame:
                     resultList.append(i)
         return resultList
     
-    @staticmethod
-    def calculateReturn(priceList):
-        '''
-        input: list of prices,
-        formula: (current price - previous price) / previous price
-        output: list of returns.
-        '''
-        returnList = []
-        prev = priceList.pop(0)
-        for price in priceList:
-            returnList.append((price - prev) / prev)
-        return returnList
+    # def addCol(self, data, col=None):
+    #     '''
+    #     insert one row of data at the given col 
+    #     if row is empty, add to the last col 
+    #     '''
+    #     if not col:
+    #         col = len(self.dataList[0])
+    #     for i, row in enumerate(self.dataList):
+    #        row.insert(data[i], col) 
 
-    @staticmethod 
-    def calculateMean(nums):
-        '''
-        input: list of numbers,
-        return: mean of the numbers.
-        '''
-        return sum(nums)/len(nums)
+    # def apply(self, func, row=None, col=None):
+    #     '''
+    #     apply a function on a given row/col of data
+    #     '''
+    #     selectedData=[]
+    #     if row:
+    #         selectedData=self.row(row)
+    #     else:
+    #         selectedData=self.col(col)
+    #     return func(selectedData)
 
-    @staticmethod
-    def calculateSD(nums):
-        '''
-        input: list of numbers,
-        formula:
-        return: standard deviation of the numbers.
-        '''
-        squareOfSumOfDiffFromMean = 0
-        for num in nums:
-            mean = QFFrame.calculateMean(nums)
-            squareOfSumOfDiffFromMean += (num - mean) ** 2
-        sd = (squareOfSumOfDiffFromMean / len(nums)) ** 0.5
-        return sd 
-
-    @staticmethod
-    def calculateSharpeRatio(returns, Rf=0.05):
-        '''
-        input: list of returns,
-        formula: 
-        return: sharpe ratio.
-        '''
-        productOfFactor = 1
-        for value in returns:
-            factor = value + 1
-            productOfFactor = productOfFactor * factor
-        effectiveRateOfReturn = (productOfFactor ** (1/len(returns)) ** 12) - 1
-        riskPremium = effectiveRateOfReturn - Rf 
-        sharpeRatio = riskPremium / QFFrame.calculateSD(returns)
-        return sharpeRatio
-    
     def __str__(self):
         return ','.join(str(item) for innerlist in self.dataList for item in innerlist)
