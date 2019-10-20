@@ -35,7 +35,9 @@ def calculateMean(nums):
     input: list of numbers,
     return: mean of the numbers.
     '''
-    return sum(nums)/len(nums)
+    summation = sum(nums)
+    count = len(nums)
+    return summation/count
 
 def calculateSD(nums):
     '''
