@@ -25,9 +25,9 @@ def calculateReturn(priceList):
     output: list of returns.
     '''
     returnList = []
-    prev = priceList.pop(0)
+    prev = float(priceList.pop(0))
     for price in priceList:
-        returnList.append((price - prev) / prev)
+        returnList.append((float(price) - prev) / prev)
     return returnList
     
 def calculateMean(nums):
@@ -72,20 +72,31 @@ class QFFrame:
     dataList = []
     headers = []
 
-
     def __init__(self, constructionString):
         '''
         initiate a QFFrame instance
         '''
         self.rawDataString = constructionString
     
-    def col(self, col):
+    def row(self):
+        '''
+        return num of rows
+        '''
+        return len(self.dataList) 
+
+    def col(self):
+        '''
+        retrun num of cols
+        '''
+        return len(self.dataList[0])
+
+    def getCol(self, col):
         '''
         get data of one column, return as list
         '''
         return [row[col] for row in self.dataList]
     
-    def row(self, row):
+    def getRow(self, row):
         '''
         get data of one row, return as list
         '''
@@ -112,26 +123,16 @@ class QFFrame:
                     resultList.append(i)
         return resultList
     
-    # def addCol(self, data, col=None):
-    #     '''
-    #     insert one row of data at the given col 
-    #     if row is empty, add to the last col 
-    #     '''
-    #     if not col:
-    #         col = len(self.dataList[0])
-    #     for i, row in enumerate(self.dataList):
-    #        row.insert(data[i], col) 
-
-    # def apply(self, func, row=None, col=None):
-    #     '''
-    #     apply a function on a given row/col of data
-    #     '''
-    #     selectedData=[]
-    #     if row:
-    #         selectedData=self.row(row)
-    #     else:
-    #         selectedData=self.col(col)
-    #     return func(selectedData)
+    def apply(self, func, row=None, col=None):
+        '''
+        apply a function on a given row/col of data
+        '''
+        selectedData=[]
+        if row:
+            selectedData=self.getRow(row)
+        else:
+            selectedData=self.getCol(col)
+        return func(selectedData)
 
     def __str__(self):
         return ','.join(str(item) for innerlist in self.dataList for item in innerlist)
