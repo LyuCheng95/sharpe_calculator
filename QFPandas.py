@@ -63,8 +63,9 @@ def calculateSharpeRatio(returns, Rf=0.05):
         factor = value + 1
         productOfFactor = productOfFactor * factor
     effectiveRateOfReturn = (productOfFactor ** (1/len(returns)) ** 12) - 1
+    adjustedSD = (len(returns)*calculateSD**2)**0.5
     riskPremium = effectiveRateOfReturn - Rf 
-    sharpeRatio = riskPremium / calculateSD(returns)
+    sharpeRatio = riskPremium / adjustedSD
     return sharpeRatio
 
 class QFFrame:
