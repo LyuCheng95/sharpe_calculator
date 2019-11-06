@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>HDB Loan Calculator</string>
+   <string>Sharpe Ratio Calculator</string>
   </property>
   <property name="styleSheet">
    <string notr="true">background-color: rgb(91, 155, 213);</string>
@@ -52,7 +52,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Sharpee Ratio Calculator</string>
+     <string>Sharpe Ratio Calculator</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>

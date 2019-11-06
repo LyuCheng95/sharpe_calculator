@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5 import uic
 import math
 
-qtCreatorFile = "SharpeeRatioCalculator.ui"
+qtCreatorFile = "SharpeRatioCalculator.ui"
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
 class Main(QMainWindow, Ui_MainWindow):
