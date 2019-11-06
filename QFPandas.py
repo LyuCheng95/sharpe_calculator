@@ -28,6 +28,7 @@ def calculateReturn(priceList):
     prev = float(priceList.pop(0))
     for price in priceList:
         returnList.append((float(price) - prev) / prev)
+        prev = float(price)
     return returnList
     
 def calculateMean(nums):
@@ -58,12 +59,15 @@ def calculateSharpeRatio(returns, Rf=0.05):
     formula: 
     return: sharpe ratio.
     '''
+    print(returns)
     productOfFactor = 1
     for value in returns:
         factor = value + 1
         productOfFactor = productOfFactor * factor
-    effectiveRateOfReturn = (productOfFactor ** (1/len(returns)) ** 12) - 1
-    adjustedSD = (len(returns)*calculateSD**2)**0.5
+    effectiveRateOfReturn = (productOfFactor ** (1/len(returns))) ** 12 - 1
+    print(calculateSD(returns))
+    adjustedSD = (12*calculateSD(returns)**2)**0.5
+    print(adjustedSD)
     riskPremium = effectiveRateOfReturn - Rf 
     sharpeRatio = riskPremium / adjustedSD
     return sharpeRatio
